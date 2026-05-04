@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJ1 Builders — Modern Construction</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #FAFAF8;
+    --off-white: #F2F0EB;
+    --black: #111110;
+    --accent: #D4A853;
+    --accent-light: #F5E4B8;
+    --mid: #6B6B65;
+    --light-border: #E0DDD6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ─── PAGE LOADER ─────────────────────────────── */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
+
+  .loader-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    animation: loaderPulse 1s ease infinite alternate;
+  }
+  .loader-logo span { color: var(--accent); }
+
+  .loader-bar-wrap {
+    width: 160px;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  .loader-bar {
+    height: 100%;
+    background: var(--accent);
+    animation: loaderFill 1.4s ease forwards;
+  }
+
+  @keyframes loaderPulse {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+  }
+  @keyframes loaderFill {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }
+
+  /* ─── CURSOR ──────────────────────────────────── */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9000;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 8999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* ─── SCROLL PROGRESS ─────────────────────────── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    z-index: 9999;
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ─── BACK TO TOP ─────────────────────────────── */
+  #back-top {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px;
+    background: var(--black);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    border: none;
+  }
+  #back-top.show { opacity: 1; transform: translateY(0); }
+  #back-top:hover { background: var(--accent); color: var(--black); }
+
+  /* ─── NAV ─────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(250,250,248,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--light-border);
+    transform: translateY(-100%);
+    animation: navDrop 0.6s 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  @keyframes navDrop {
+    to { transform: translateY(0); }
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 0.08em;
+    color: var(--black);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-logo:hover { opacity: 0.7; }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--mid);
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--accent);
+    transition: width 0.25s;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--black);
+    color: var(--white) !important;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2px;
+    transition: background 0.25s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--accent) !important; color: var(--black) !important; transform: translateY(-1px) !important; }
+  .nav-cta::after { display: none !important; }
+
+  /* ─── SCROLL REVEAL BASE ──────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  .d1 { transition-delay: 0.05s; }
+  .d2 { transition-delay: 0.15s; }
+  .d3 { transition-delay: 0.25s; }
+  .d4 { transition-delay: 0.35s; }
+  .d5 { transition-delay: 0.45s; }
+  .d6 { transition-delay: 0.55s; }
+
+  /* ─── HERO ────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 72px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+    position: relative;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.8s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--accent);
+  }
+
+  .hero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 7vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .h1-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    animation: lineUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .h1-line:nth-child(1) { animation-delay: 1.9s; }
+  .h1-line:nth-child(2) { animation-delay: 2.0s; }
+  .h1-line:nth-child(3) { animation-delay: 2.1s; }
+  .h1-line:nth-child(4) { animation-delay: 2.2s; }
+
+  @keyframes lineUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .line-accent { color: var(--accent); }
+
+  .hero-body {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--mid);
+    max-width: 360px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 2.35s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.7s 2.5s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  .btn-primary {
+    background: var(--black);
+    color: var(--white);
+    padding: 0.9rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: translateX(-101%);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .btn-primary:hover { color: var(--black); }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-ghost {
+    color: var(--black);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s, gap 0.2s;
+  }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); gap: 0.7rem; }
+
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--light-border);
+    opacity: 0;
+    animation: fadeUp 0.7s 2.65s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--black);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.2rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── HERO RIGHT ──────────────────────────────── */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    background: var(--off-white);
+    opacity: 0;
+    animation: heroRightIn 1s 1.7s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  @keyframes heroRightIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-img-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+  }
+
+  .hero-img-top {
+    background: linear-gradient(160deg, #2A2A28 0%, #1a1a18 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .arch-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background-image:
+      linear-gradient(0deg, transparent 24%, rgba(212,168,83,0.6) 25%, rgba(212,168,83,0.6) 26%, transparent 27%),
+      linear-gradient(90deg, transparent 24%, rgba(212,168,83,0.6) 25%, rgba(212,168,83,0.6) 26%, transparent 27%);
+    background-size: 60px 60px;
+    animation: patternShift 20s linear infinite;
+  }
+  @keyframes patternShift {
+    from { background-position: 0 0; }
+    to   { background-position: 60px 60px; }
+  }
+
+  .arch-lines { position: absolute; inset: 0; overflow: hidden; }
+  .arch-line {
+    position: absolute;
+    background: rgba(212,168,83,0.15);
+    animation: lineFade 4s ease-in-out infinite alternate;
+  }
+  .arch-line:nth-child(1) { width: 1px; height: 60%; top: 20%; left: 30%; animation-delay: 0s; }
+  .arch-line:nth-child(2) { width: 1px; height: 40%; top: 30%; left: 60%; animation-delay: 0.7s; }
+  .arch-line:nth-child(3) { width: 50%; height: 1px; top: 35%; left: 25%; animation-delay: 1.4s; }
+  .arch-line:nth-child(4) { width: 30%; height: 1px; top: 65%; left: 35%; animation-delay: 2s; }
+  @keyframes lineFade {
+    from { opacity: 0.2; }
+    to   { opacity: 0.8; }
+  }
+
+  .hero-label-box { position: relative; z-index: 2; text-align: center; }
+  .big-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9rem;
+    color: rgba(212,168,83,0.18);
+    line-height: 1;
+    letter-spacing: 0.1em;
+    animation: bigPulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes bigPulse {
+    from { color: rgba(212,168,83,0.12); letter-spacing: 0.08em; }
+    to   { color: rgba(212,168,83,0.3);  letter-spacing: 0.14em; }
+  }
+
+  .hero-img-bottom { display: grid; grid-template-columns: 1fr 1fr; }
+
+  .hero-card {
+    padding: 2rem;
+    border: 1px solid var(--light-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    cursor: default;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-light);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    z-index: 0;
+  }
+  .hero-card:hover::before { transform: scaleY(1); }
+  .hero-card > * { position: relative; z-index: 1; }
+  .hero-card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+  .hero-card:hover .hero-card-icon { transform: scale(1.2) rotate(-5deg); }
+  .hero-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.05em; }
+  .hero-card-desc { font-size: 0.78rem; color: var(--mid); margin-top: 0.25rem; line-height: 1.5; }
+
+  /* ─── SERVICES ────────────────────────────────── */
+  .services { padding: 7rem 4rem; background: var(--white); }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+
+  .section-tag {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 20px; height: 2px;
+    background: var(--accent);
+  }
+
+  .section-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--light-border);
+    border: 1px solid var(--light-border);
+  }
+
+  .service-item {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--accent);
+    transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .service-item:hover { background: var(--off-white); }
+  .service-item:hover::after { width: 100%; }
+
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--accent-light);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-block;
+  }
+  .service-item:hover .service-num { color: var(--accent); transform: scale(1.08); }
+
+  .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.04em; margin-bottom: 0.75rem; }
+  .service-desc { font-size: 0.88rem; color: var(--mid); line-height: 1.65; font-weight: 300; }
+
+  /* ─── ABOUT ───────────────────────────────────── */
+  .about-strip {
+    background: var(--black);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-strip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, rgba(212,168,83,0.03) 1px, transparent 1px);
+    background-size: 80px 100%;
+    animation: slideLines 15s linear infinite;
+  }
+  @keyframes slideLines {
+    from { background-position: 0 0; }
+    to   { background-position: 80px 0; }
+  }
+
+  .about-left .section-tag { color: var(--accent); }
+  .about-left .section-h2 { color: var(--white); margin-bottom: 1.5rem; }
+  .about-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(250,250,248,0.55);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .about-right {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .about-stat-box {
+    background: rgba(255,255,255,0.04);
+    padding: 2.5rem 2rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .about-stat-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+  .about-stat-box:hover { background: rgba(255,255,255,0.07); }
+  .about-stat-box:hover::after { width: 100%; }
+  .about-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 1;
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+  .about-stat-box:hover .about-stat-num { transform: scale(1.08); }
+  .about-stat-label { font-size: 0.8rem; color: rgba(250,250,248,0.45); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; }
+
+  /* ─── PROCESS ─────────────────────────────────── */
+  .process { padding: 7rem 4rem; background: var(--off-white); }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+    border: 1px solid var(--light-border);
+  }
+
+  .step {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--light-border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--white); }
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .step:hover::before { height: 100%; }
+
+  .step-arrow {
+    position: absolute;
+    top: 50%; right: -12px;
+    transform: translateY(-50%);
+    width: 24px; height: 24px;
+    background: var(--accent);
+    clip-path: polygon(0 20%,60% 20%,60% 0,100% 50%,60% 100%,60% 80%,0 80%);
+    z-index: 2;
+    animation: arrowBounce 2s ease-in-out infinite;
+  }
+  @keyframes arrowBounce {
+    0%,100% { transform: translateY(-50%) translateX(0); }
+    50%      { transform: translateY(-50%) translateX(3px); }
+  }
+  .step:last-child .step-arrow { display: none; }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--light-border);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-block;
+  }
+  .step:hover .step-num { color: var(--accent); transform: scale(1.05); }
+  .step-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.83rem; color: var(--mid); line-height: 1.65; font-weight: 300; }
+
+  /* ─── REVIEWS ─────────────────────────────────── */
+  .reviews { padding: 7rem 4rem; background: var(--white); }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+
+  .review-card {
+    padding: 2rem;
+    border: 1px solid var(--light-border);
+    background: var(--white);
+    transition: border-color 0.3s, transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .review-card::before {
+    content: '"';
+    position: absolute;
+    top: -0.5rem; right: 1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    color: var(--accent-light);
+    line-height: 1;
+    transition: color 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .review-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(17,17,16,0.08); }
+  .review-card:hover::before { color: var(--accent); transform: scale(1.1); }
+  .stars { color: var(--accent); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .review-text { font-size: 0.9rem; line-height: 1.7; color: var(--mid); font-weight: 300; font-style: italic; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .review-author { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--black); }
+
+  /* ─── CONTACT ─────────────────────────────────── */
+  .contact {
+    padding: 7rem 4rem;
+    background: var(--black);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-left .section-tag { color: var(--accent); }
+  .contact-left .section-h2 { color: var(--white); margin-bottom: 1.5rem; }
+  .contact-left .about-body { margin-bottom: 2.5rem; }
+  .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-row {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.88rem; color: rgba(250,250,248,0.6);
+    transition: color 0.2s, transform 0.2s;
+  }
+  .contact-row:hover { color: var(--white); transform: translateX(4px); }
+  .contact-row-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(212,168,83,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-row:hover .contact-row-icon { background: rgba(212,168,83,0.1); border-color: var(--accent); }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  input, textarea, select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    padding: 0.9rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; outline: none;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+    resize: none;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(250,250,248,0.3); }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+  select option { background: #1a1a18; }
+  .btn-submit {
+    background: var(--accent);
+    color: var(--black);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: none; cursor: pointer; width: 100%; margin-top: 0.5rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .btn-submit::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-101%);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .btn-submit:hover { transform: translateY(-2px); }
+  .btn-submit:hover::after { transform: translateX(0); }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* ─── FOOTER ──────────────────────────────────── */
+  footer {
+    background: #0A0A09;
+    padding: 2.5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.08em; color: rgba(250,250,248,0.6); transition: color 0.2s; }
+  .footer-logo:hover { color: var(--white); }
+  .footer-logo span { color: var(--accent); }
+  .footer-copy { font-size: 0.78rem; color: rgba(250,250,248,0.3); letter-spacing: 0.06em; }
+  .footer-reg  { font-size: 0.78rem; color: rgba(250,250,248,0.25); letter-spacing: 0.04em; }
+
+  /* ─── MARQUEE ─────────────────────────────────── */
+  .marquee-bar { background: var(--accent); padding: 0.8rem 0; overflow: hidden; white-space: nowrap; }
+  .marquee-track { display: inline-flex; animation: marquee 25s linear infinite; }
+  .marquee-bar:hover .marquee-track { animation-play-state: paused; }
+  .marquee-item { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.12em; color: var(--black); padding: 0 2.5rem; }
+  .marquee-dot { color: rgba(17,17,16,0.4); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ─── WATERMARK ──────────────────────────────── */
+  #watermark {
+    position: fixed;
+    bottom: 1.2rem;
+    left: 1.5rem;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(17,17,16,0.82);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212,168,83,0.3);
+    padding: 0.5rem 1rem;
+    pointer-events: none;
+    animation: wmFadeIn 1s 2s ease both;
+  }
+  @keyframes wmFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .wm-badge {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(212,168,83,0.12);
+    border: 1px solid rgba(212,168,83,0.35);
+    padding: 0.15rem 0.45rem;
+  }
+  .wm-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(250,250,248,0.7);
+  }
+  .wm-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .wm-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  /* ─── MOBILE ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 40vh; }
+    .hero-left { padding: 4rem 1.5rem; }
+    .services, .process, .reviews, .contact { padding: 4rem 1.5rem; }
+    .about-strip { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .contact { grid-template-columns: 1fr; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    .form-row { grid-template-columns: 1fr; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- WATERMARK -->
+<div id="watermark">
+  <span class="wm-badge">Demo</span>
+  <div class="wm-divider"></div>
+  <span class="wm-text">Created by <strong>AB | Client Growth</strong></span>
+</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">AJ<span>1</span> BUILDERS</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="progress-bar"></div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">AJ<span>1</span> BUILDERS</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Bracknell's Trusted Builders</div>
+    <h1 class="hero-h1">
+      <span class="h1-line">BUILT</span>
+      <span class="h1-line">FOR</span>
+      <span class="h1-line line-accent">MODERN</span>
+      <span class="h1-line">LIVING.</span>
+    </h1>
+    <p class="hero-body">
+      From new builds and full house refurbishments to RSJ installations and kitchen extensions — AJ1 Builders delivers precision craftsmanship with full insurance and a hands-on approach.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary"><span>Get a Free Quote</span></a>
+      <a href="#services" class="btn-ghost">Our Services →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num" data-count="15" data-suffix="+">0+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num" data-count="500" data-suffix="+">0+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div>
+        <div class="stat-num">5<span>★</span></div>
+        <div class="stat-label">Google Rated</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      <div class="hero-img-top">
+        <div class="arch-pattern"></div>
+        <div class="arch-lines">
+          <div class="arch-line"></div>
+          <div class="arch-line"></div>
+          <div class="arch-line"></div>
+          <div class="arch-line"></div>
+        </div>
+        <div class="hero-label-box">
+          <div class="big-letter">AJ1</div>
+        </div>
+      </div>
+      <div class="hero-img-bottom">
+        <div class="hero-card">
+          <div class="hero-card-icon">🏗️</div>
+          <div class="hero-card-title">New Builds</div>
+          <div class="hero-card-desc">Ground-up construction tailored to your vision</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-icon">🔨</div>
+          <div class="hero-card-title">Renovations</div>
+          <div class="hero-card-desc">Full house refurbishments & structural work</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="marquee-item">New Builds <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">House Refurbishment <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Kitchen Extensions <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">RSJ Installation <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Garden Renovations <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Painting & Decorating <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Roofing <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Brick Laying <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">New Builds <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">House Refurbishment <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Kitchen Extensions <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">RSJ Installation <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Garden Renovations <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Painting & Decorating <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Roofing <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Brick Laying <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div>
+      <div class="section-tag reveal d1">What We Do</div>
+      <h2 class="section-h2 reveal d2">Our Services</h2>
+    </div>
+    <a href="#contact" class="btn-ghost reveal d3" style="margin-bottom:4px;">Enquire Now →</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-item reveal d1"><div class="service-num">01</div><div class="service-name">New Builds</div><div class="service-desc">Full ground-up construction from foundations to finish. We manage the entire project so you don't have to.</div></div>
+    <div class="service-item reveal d2"><div class="service-num">02</div><div class="service-name">House Refurbishment</div><div class="service-desc">We don't just refresh rooms — we reimagine entire layouts, handling structural work that truly transforms homes.</div></div>
+    <div class="service-item reveal d3"><div class="service-num">03</div><div class="service-name">Kitchen Extensions</div><div class="service-desc">Create the open-plan space you've always wanted. Structural changes, replumbing and rewiring included.</div></div>
+    <div class="service-item reveal d4"><div class="service-num">04</div><div class="service-name">RSJ Installation</div><div class="service-desc">Precise load-bearing wall removal and steel beam installation — done safely, to spec, every time.</div></div>
+    <div class="service-item reveal d5"><div class="service-num">05</div><div class="service-name">Garden Rooms & Patios</div><div class="service-desc">Summer rooms, garden offices, patios and landscaping. Extend your living space outward.</div></div>
+    <div class="service-item reveal d6"><div class="service-num">06</div><div class="service-name">Roofing & Repairs</div><div class="service-desc">From full re-roofs to repairs and maintenance. Fully insured and built to last.</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div class="about-left reveal-left">
+    <div class="section-tag">About AJ1 Builders</div>
+    <h2 class="section-h2">WE BUILD<br>WITH PRIDE.</h2>
+    <p class="about-body">AJ1 Builders brings hands-on expertise to every project, overseeing each job from initial consultation through to completion. We ensure clear communication and detailed quotes with no hidden surprises. Fully insured and built on a foundation of trust.</p>
+    <a href="tel:07554502548" class="btn-primary" style="display:inline-block;"><span>Call Us — 07554 502548</span></a>
+  </div>
+  <div class="about-right reveal-right">
+    <div class="about-stat-box"><div class="about-stat-num">100%</div><div class="about-stat-label">Fully Insured</div></div>
+    <div class="about-stat-box"><div class="about-stat-num">Free</div><div class="about-stat-label">Detailed Quotes</div></div>
+    <div class="about-stat-box"><div class="about-stat-num">★★★★★</div><div class="about-stat-label">Google Reviews</div></div>
+    <div class="about-stat-box"><div class="about-stat-num">Bracknell</div><div class="about-stat-label">& Surrounding Areas</div></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-header">
+    <div>
+      <div class="section-tag reveal d1">How It Works</div>
+      <h2 class="section-h2 reveal d2">Our Process</h2>
+    </div>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal d1"><div class="step-arrow"></div><div class="step-num">01</div><div class="step-title">Get in Touch</div><div class="step-desc">Call, email or fill in our form. Tell us about your project and we'll get back to you quickly.</div></div>
+    <div class="step reveal d2"><div class="step-arrow"></div><div class="step-num">02</div><div class="step-title">Site Visit</div><div class="step-desc">We visit your property to assess the scope and discuss your vision in detail.</div></div>
+    <div class="step reveal d3"><div class="step-arrow"></div><div class="step-num">03</div><div class="step-title">Free Quote</div><div class="step-desc">Receive a clear, detailed quote with no hidden costs. We explain every line.</div></div>
+    <div class="step reveal d4"><div class="step-num">04</div><div class="step-title">Build & Complete</div><div class="step-desc">We get to work and keep you updated throughout the entire project.</div></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="section-header">
+    <div>
+      <div class="section-tag reveal d1">What Clients Say</div>
+      <h2 class="section-h2 reveal d2">Google Reviews</h2>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal d1"><div class="stars">★★★★★</div><p class="review-text">"AJ1 Builders built a very attractive front porch and lean-to at the side of my house. They've been highly efficient, professional and courteous throughout the whole project."</p><div class="review-author">Verified Google Review</div></div>
+    <div class="review-card reveal d2"><div class="stars">★★★★★</div><p class="review-text">"AJ1 Builders came out within 2 days of me calling them and gave us our quote the next day. They were polite and did a great job on our rear extension."</p><div class="review-author">Verified Google Review</div></div>
+    <div class="review-card reveal d3"><div class="stars">★★★★★</div><p class="review-text">"The team completed all the groundworks including waste and water pipes for a summer room in our garden. Excellent workmanship and great communication throughout."</p><div class="review-author">Verified Google Review</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left reveal-left">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-h2">LET'S BUILD<br>SOMETHING.</h2>
+    <p class="about-body">Ready to start your project? Get in touch for a free, no-obligation quote. We personally respond to every enquiry.</p>
+    <div class="contact-info">
+      <div class="contact-row"><div class="contact-row-icon">📍</div><span>7 Milbanke Ct, Bracknell, RG12 1RP</span></div>
+      <div class="contact-row"><div class="contact-row-icon">📞</div><span>07554 502548</span></div>
+      <div class="contact-row"><div class="contact-row-icon">🌐</div><span>aj1builders.co.uk</span></div>
+    </div>
+  </div>
+  <div class="contact-form reveal-right">
+    <div class="form-row">
+      <input type="text" placeholder="Your Name">
+      <input type="tel" placeholder="Phone Number">
+    </div>
+    <input type="email" placeholder="Email Address">
+    <select><option value="" disabled selected>Select Service</option><option>New Build</option><option>House Refurbishment</option><option>Kitchen Extension</option><option>RSJ Installation</option><option>Garden Room / Patio</option><option>Roofing</option><option>Other</option></select>
+    <textarea rows="5" placeholder="Tell us about your project..."></textarea>
+    <button class="btn-submit">Send Enquiry</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AJ<span>1</span> BUILDERS</div>
+  <div class="footer-copy">© 2025 AJ1 Builders. All rights reserved.</div>
+  <div class="footer-reg">Fully Insured · Bracknell, Berkshire</div>
+</footer>
+
+<script>
+  /* ── LOADER ─────────────────────────────────── */
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1600);
+  });
+
+  /* ── CUSTOM CURSOR ──────────────────────────── */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a,button,.service-item,.review-card,.hero-card,.step,.about-stat-box').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '24px'; cursor.style.height = '24px';
+      ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px'; cursor.style.height = '12px';
+      ring.style.width = '40px'; ring.style.height = '40px'; ring.style.opacity = '0.5';
+    });
+  });
+
+  /* ── SCROLL PROGRESS ────────────────────────── */
+  const progressBar = document.getElementById('progress-bar');
+  const backTop = document.getElementById('back-top');
+  const nav = document.querySelector('nav');
+
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    progressBar.style.width = pct + '%';
+    backTop.classList.toggle('show', window.scrollY > 500);
+    nav.style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(17,17,16,0.08)' : 'none';
+  });
+
+  /* ── SCROLL REVEAL ──────────────────────────── */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+
+  /* ── COUNTER ANIMATION ──────────────────────── */
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      let start = null;
+      const duration = 1800;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+
+  /* ── PARALLAX ON HERO PATTERN ───────────────── */
+  const pattern = document.querySelector('.arch-pattern');
+  window.addEventListener('scroll', () => {
+    if (pattern) pattern.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+  }, { passive: true });
+
+  /* ── RIPPLE ON SUBMIT ───────────────────────── */
+  const style = document.createElement('style');
+  style.textContent = `@keyframes ripple { to { transform:scale(2.5); opacity:0; } }`;
+  document.head.appendChild(style);
+
+  document.querySelector('.btn-submit').addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,0.4);transform:scale(0);animation:ripple 0.6s linear;width:120px;height:120px;left:${e.clientX-rect.left-60}px;top:${e.clientY-rect.top-60}px;pointer-events:none;`;
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+</script>
+</body>
+</html>
