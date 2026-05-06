@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AJ1 Builders — Modern Construction</title>
+<title>Stoneworks — Modern Construction</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -804,53 +804,6 @@
   .marquee-dot { color: rgba(17,17,16,0.4); }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* ─── WATERMARK ──────────────────────────────── */
-  #watermark {
-    position: fixed;
-    bottom: 1.2rem;
-    left: 1.5rem;
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    background: rgba(17,17,16,0.82);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(212,168,83,0.3);
-    padding: 0.5rem 1rem;
-    pointer-events: none;
-    animation: wmFadeIn 1s 2s ease both;
-  }
-  @keyframes wmFadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .wm-badge {
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(212,168,83,0.12);
-    border: 1px solid rgba(212,168,83,0.35);
-    padding: 0.15rem 0.45rem;
-  }
-  .wm-text {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: rgba(250,250,248,0.7);
-  }
-  .wm-text strong {
-    color: var(--white);
-    font-weight: 600;
-  }
-  .wm-divider {
-    width: 1px;
-    height: 14px;
-    background: rgba(255,255,255,0.15);
-  }
-
   /* ─── MOBILE ──────────────────────────────────── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
@@ -871,16 +824,9 @@
 </head>
 <body>
 
-<!-- WATERMARK -->
-<div id="watermark">
-  <span class="wm-badge">Demo</span>
-  <div class="wm-divider"></div>
-  <span class="wm-text">Created by <strong>AB | Client Growth</strong></span>
-</div>
-
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">AJ<span>1</span> BUILDERS</div>
+  <div class="loader-logo">STONE<span>WORKS</span></div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
 
@@ -896,7 +842,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">AJ<span>1</span> BUILDERS</a>
+  <a href="#" class="nav-logo">STONE<span>WORKS</span></a>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#about">About</a></li>
@@ -909,7 +855,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-    <div class="hero-tag">Bracknell's Trusted Builders</div>
+    <div class="hero-tag">Trusted Local Builders</div>
     <h1 class="hero-h1">
       <span class="h1-line">BUILT</span>
       <span class="h1-line">FOR</span>
@@ -917,7 +863,7 @@
       <span class="h1-line">LIVING.</span>
     </h1>
     <p class="hero-body">
-      From new builds and full house refurbishments to RSJ installations and kitchen extensions — AJ1 Builders delivers precision craftsmanship with full insurance and a hands-on approach.
+      From new builds and full house refurbishments to RSJ installations and kitchen extensions — we deliver precision craftsmanship with full insurance and a hands-on approach.
     </p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary"><span>Get a Free Quote</span></a>
@@ -950,7 +896,7 @@
           <div class="arch-line"></div>
         </div>
         <div class="hero-label-box">
-          <div class="big-letter">AJ1</div>
+          <div class="big-letter">SW</div>
         </div>
       </div>
       <div class="hero-img-bottom">
@@ -1013,16 +959,16 @@
 <!-- ABOUT -->
 <section class="about-strip" id="about">
   <div class="about-left reveal-left">
-    <div class="section-tag">About AJ1 Builders</div>
+    <div class="section-tag">About Us</div>
     <h2 class="section-h2">WE BUILD<br>WITH PRIDE.</h2>
-    <p class="about-body">AJ1 Builders brings hands-on expertise to every project, overseeing each job from initial consultation through to completion. We ensure clear communication and detailed quotes with no hidden surprises. Fully insured and built on a foundation of trust.</p>
-    <a href="tel:07554502548" class="btn-primary" style="display:inline-block;"><span>Call Us — 07554 502548</span></a>
+    <p class="about-body">We bring hands-on expertise to every project, overseeing each job from initial consultation through to completion. We ensure clear communication and detailed quotes with no hidden surprises. Fully insured and built on a foundation of trust.</p>
+    <a href="#contact" class="btn-primary" style="display:inline-block;"><span>Get In Touch</span></a>
   </div>
   <div class="about-right reveal-right">
     <div class="about-stat-box"><div class="about-stat-num">100%</div><div class="about-stat-label">Fully Insured</div></div>
     <div class="about-stat-box"><div class="about-stat-num">Free</div><div class="about-stat-label">Detailed Quotes</div></div>
-    <div class="about-stat-box"><div class="about-stat-num">★★★★★</div><div class="about-stat-label">Google Reviews</div></div>
-    <div class="about-stat-box"><div class="about-stat-num">Bracknell</div><div class="about-stat-label">& Surrounding Areas</div></div>
+    <div class="about-stat-box"><div class="about-stat-num">★★★★★</div><div class="about-stat-label">5-Star Rated</div></div>
+    <div class="about-stat-box"><div class="about-stat-num">Local</div><div class="about-stat-label">& Surrounding Areas</div></div>
   </div>
 </section>
 
@@ -1047,13 +993,13 @@
   <div class="section-header">
     <div>
       <div class="section-tag reveal d1">What Clients Say</div>
-      <h2 class="section-h2 reveal d2">Google Reviews</h2>
+      <h2 class="section-h2 reveal d2">Client Reviews</h2>
     </div>
   </div>
   <div class="reviews-grid">
-    <div class="review-card reveal d1"><div class="stars">★★★★★</div><p class="review-text">"AJ1 Builders built a very attractive front porch and lean-to at the side of my house. They've been highly efficient, professional and courteous throughout the whole project."</p><div class="review-author">Verified Google Review</div></div>
-    <div class="review-card reveal d2"><div class="stars">★★★★★</div><p class="review-text">"AJ1 Builders came out within 2 days of me calling them and gave us our quote the next day. They were polite and did a great job on our rear extension."</p><div class="review-author">Verified Google Review</div></div>
-    <div class="review-card reveal d3"><div class="stars">★★★★★</div><p class="review-text">"The team completed all the groundworks including waste and water pipes for a summer room in our garden. Excellent workmanship and great communication throughout."</p><div class="review-author">Verified Google Review</div></div>
+    <div class="review-card reveal d1"><div class="stars">★★★★★</div><p class="review-text">"They built a very attractive front porch and lean-to at the side of my house. Highly efficient, professional and courteous throughout the whole project."</p><div class="review-author">Sample Review</div></div>
+    <div class="review-card reveal d2"><div class="stars">★★★★★</div><p class="review-text">"They came out within 2 days of me calling and gave us our quote the next day. Polite team and a great job on our rear extension."</p><div class="review-author">Sample Review</div></div>
+    <div class="review-card reveal d3"><div class="stars">★★★★★</div><p class="review-text">"The team completed all the groundworks including waste and water pipes for a summer room in our garden. Excellent workmanship and great communication throughout."</p><div class="review-author">Sample Review</div></div>
   </div>
 </section>
 
@@ -1064,9 +1010,9 @@
     <h2 class="section-h2">LET'S BUILD<br>SOMETHING.</h2>
     <p class="about-body">Ready to start your project? Get in touch for a free, no-obligation quote. We personally respond to every enquiry.</p>
     <div class="contact-info">
-      <div class="contact-row"><div class="contact-row-icon">📍</div><span>7 Milbanke Ct, Bracknell, RG12 1RP</span></div>
-      <div class="contact-row"><div class="contact-row-icon">📞</div><span>07554 502548</span></div>
-      <div class="contact-row"><div class="contact-row-icon">🌐</div><span>aj1builders.co.uk</span></div>
+      <div class="contact-row"><div class="contact-row-icon">📍</div><span>Local pickup & site visits</span></div>
+      <div class="contact-row"><div class="contact-row-icon">📞</div><span>Phone number here</span></div>
+      <div class="contact-row"><div class="contact-row-icon">🌐</div><span>yourwebsite.co.uk</span></div>
     </div>
   </div>
   <div class="contact-form reveal-right">
@@ -1083,9 +1029,9 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">AJ<span>1</span> BUILDERS</div>
-  <div class="footer-copy">© 2025 AJ1 Builders. All rights reserved.</div>
-  <div class="footer-reg">Fully Insured · Bracknell, Berkshire</div>
+  <div class="footer-logo">STONE<span>WORKS</span></div>
+  <div class="footer-copy">© 2026 Stoneworks · Demo Template</div>
+  <div class="footer-reg">Fully Insured · Local Builders</div>
 </footer>
 
 <script>
