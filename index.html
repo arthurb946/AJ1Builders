@@ -1109,7 +1109,10 @@
       counterObs.unobserve(el);
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  // Delay observing until after loader has hidden, so the counter animation is visible
+  setTimeout(() => {
+    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  }, 2200);
 
   /* ── PARALLAX ON HERO PATTERN ───────────────── */
   const pattern = document.querySelector('.arch-pattern');
